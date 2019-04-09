@@ -29,9 +29,9 @@ public class Model {
 	private void calcolaAnagrammi(String p, Anagramma parziale, int L) {
 		
 		if(L == p.length()) {
-			if(pdao.isCorrect(parziale)) {
+			if(pdao.isCorrect(parziale) && isIn(parziale, soluzioniC)==false) {
 				soluzioniC.add(parziale.clone());
-			} else {
+			} else if(!pdao.isCorrect(parziale) && isIn(parziale, soluzioniE)==false){
 				soluzioniE.add(parziale.clone());
 			}
 				
@@ -40,7 +40,7 @@ public class Model {
 		
 		for(Character c : p.toCharArray()) {
 			
-			if(!parziale.contains(c)) {
+			if(contaLettera(c, p)>contaLettera(c, parziale.getString())) {
 				parziale.add(c);
 				
 				calcolaAnagrammi(p, parziale, L+1);
@@ -52,6 +52,19 @@ public class Model {
 		}
 		
 	}
+	
+	
+	
+	public int contaLettera(Character c, String iniziale) {
+		int count = 0;
+		for(int i=0; i<iniziale.length(); i++) {
+			if(iniziale.charAt(i)==c)
+				count++;
+		}
+		return count;
+	}
+	
+	
 	
 	
 	
@@ -71,6 +84,15 @@ public class Model {
 		return s;
 	}
 
+	public boolean isIn(Anagramma a, List<Anagramma> l) {
+		boolean check = false;
+		for(Anagramma x : l) {
+			if(x.getString().equals(a.getString())) {
+				check = true;
+			}
+		}
+		return check;
+	}
 
 
 
